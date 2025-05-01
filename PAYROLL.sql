@@ -360,12 +360,18 @@ delimiter ;
 call  below_salay_50k(50000);
  
 -- 10.Find employees who have never taken leave. 
+DELIMITER //
 
-SELECT e.EmployeeID, e.Name
-FROM Employee e
-left join Attendance a 
-ON e.EmployeeID = a.EmployeeID 
-where status = 
+CREATE PROCEDURE never_take_leave()
+BEGIN
+    SELECT e.EmployeeID, e.Name, a.status
+    FROM Employee e
+    LEFT JOIN Attendance a 
+    ON e.EmployeeID = a.EmployeeID 
+    WHERE a.status NOT IN ('Leave', 'Absent', 'Half-Day');
+END //
 
+DELIMITER ;
+call never_take_leave();
  
 
